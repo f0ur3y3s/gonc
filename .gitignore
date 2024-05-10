@@ -1,0 +1,4 @@
+.vscode
+bin
+*.log
+**/__pycache__
