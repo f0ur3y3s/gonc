@@ -236,6 +236,71 @@ EXIT:
     return (status);
 }
 
+int screen_height (void)
+{
+    int height = S_ERR;
+
+    if (NULL == gp_screen)
+    {
+        goto EXIT;
+    }
+
+    height = gp_screen->rows;
+
+EXIT:
+    return (height);
+}
+
+int screen_width (void)
+{
+    int width = S_ERR;
+
+    if (NULL == gp_screen)
+    {
+        goto EXIT;
+    }
+
+    width = gp_screen->cols;
+
+EXIT:
+    return (width);
+}
+
+int screen_shift_selection (point_t top_point,
+                            point_t bot_point,
+                            point_t translation)
+{
+    int status = S_ERR;
+
+    if (NULL == gp_screen)
+    {
+        goto EXIT;
+    }
+
+    if (gp_screen->cols < top_point.x || gp_screen->cols < bot_point.x
+        || gp_screen->rows < top_point.y || gp_screen->rows < bot_point.y)
+    {
+        goto EXIT;
+    }
+
+    for (int y = top_point.y; y < bot_point.y; y++)
+    {
+        for (int x = top_point.x; x < bot_point.x; x++)
+        {
+            int acc_ptr = (y * gp_screen->cols) + x;
+            screen_modify(
+                (point_t) { .x = x + translation.x, .y = y + translation.y },
+                gp_screen->pp_buffer_arr[acc_ptr]);
+            screen_modify((point_t) { .x = x, .y = y }, SCREEN_EMPTY);
+        }
+    }
+
+    status = screen_display();
+
+EXIT:
+    return (status);
+}
+
 // int screen_cut (screen_t * gp_screen, point_t start, point_t end)
 // {
 //     int status = S_ERR;

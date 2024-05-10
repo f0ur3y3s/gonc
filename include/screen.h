@@ -39,6 +39,8 @@ int screen_shift_h (int src_row, int dst_row);
 int screen_shift_v (int src_col, int dst_col);
 int screen_shift_selection (point_t top_point, point_t bot_point, point_t translation);
 int screen_clear (void);
+int screen_height (void);
+int screen_width (void);
 // int        screen_render (void);
 
 #endif // SCREEN_H

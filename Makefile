@@ -20,7 +20,7 @@ TEST_FLAGS = -I$(INCLUDES) $(DEBUG_FLAGS)
 
 .PHONY: test debug clean
 
-all: $(OBJS) $(BIN)/$(MAIN_NAME)
+all: clean $(OBJS) $(BIN)/$(MAIN_NAME)
 
 debug: CFLAGS += -g -DDEBUG
 debug: all
@@ -35,6 +35,7 @@ $(BIN)/%.o: $(SRC)/%.c $(DEPS)
 clean:
 	@rm -rf $(BIN)
 	@find . -name "*.o" -exec rm -rf {} \;
+	@find . -name "*.log" -exec rm -rf {} \;
 
 test: $(TEST_OBJS) $(TEST_EXECUTABLES)
 	@echo "[i] Compiling tests..."
