@@ -38,24 +38,33 @@ void process_key ()
     }
 }
 
-
 void calculate_line (point_t start, point_t end)
 {
     float dx       = (end.x - start.x);
     float dy       = (end.y - start.y);
     float distance = (pow(dx, 2) + pow(dy, 2));
 
+    // float slope = ((end.y - start.y)/(end.x - start.x));
+
     for (float i = 1; i < distance; i++)
     {
-        screen_modify((point_t) { .x = start.x + (int)floor((dx * i) / distance),
-                                  .y = start.y + (int)floor((dy * i) / distance) },
-                      '.');
+        screen_modify(
+            (point_t) { .x = start.x + (int)floor((dx * i) / distance),
+                        .y = start.y + (int)floor((dy * i) / distance) },
+            '.');
     }
 }
 
-void rotate_line(point_t * p_start, point_t * p_end)
+point_t midpoint_line (point_t start, point_t end)
 {
-    
+    float x = ((start.x + end.x) / 2);
+    float y = ((start.y + end.y) / 2);
+    clog(L_DEBUG, "Midpoint of line: %d,%d", (int)x, (int)y);
+    return (point_t) { (int)x, (int)y };
+}
+
+void rotate_line (point_t * p_start, point_t * p_end, int deg)
+{
 }
 
 int main (void)
@@ -66,9 +75,17 @@ int main (void)
     screen_init(width, height);
     screen_clear();
 
-    calculate_line((point_t) { 0, 0 }, (point_t) { 20, 20 });
-    calculate_line((point_t) { 10, 2 }, (point_t) { 50, 20 });
-    calculate_line((point_t) { 2, 20 }, (point_t) { 50, 1 });
+    point_t start = { 20, 0 };
+    point_t end   = { 23, 20 };
+
+    calculate_line(start, end);
+    midpoint_line(start, end);
+
+    rotate_line(&start, &end, 10);
+
+    // calculate_line((point_t) { 0, 0 }, (point_t) { 20, 20 });
+    // calculate_line((point_t) { 10, 2 }, (point_t) { 50, 20 });
+    // calculate_line((point_t) { 2, 20 }, (point_t) { 50, 1 });
 
     screen_display();
     // player.pos       = (point_t) { 0, 0 };
