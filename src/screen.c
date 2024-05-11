@@ -301,6 +301,22 @@ EXIT:
     return (status);
 }
 
+int screen_buffer_cut (point_t tlp, point_t brp)
+{
+    int status = S_ERR;
+
+    // clear the buffer from top point to bottom point
+    for (int y = tlp.y; y < brp.y; y++)
+    {
+        for (int x = tlp.x; x < brp.x; x++)
+        {
+            screen_modify((point_t){ .x = x, .y = y }, SCREEN_EMPTY);
+        }
+    }
+
+    return (status);
+}
+
 // int screen_cut (screen_t * gp_screen, point_t start, point_t end)
 // {
 //     int status = S_ERR;

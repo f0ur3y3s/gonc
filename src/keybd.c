@@ -1,18 +1,26 @@
 #include "../include/keybd.h"
 
-char keybd_read (void)
+// char keybd_read (void)
+int keybd_read (char * c)
 {
-    int  nread;
-    char c = { 0 };
+    int nread = read(STDIN_FILENO, c, 1);
 
-    while (1 != (nread = read(STDIN_FILENO, &c, 1)))
+    if ((-1 == nread) && (EAGAIN != errno))
     {
-        if (nread == -1 && errno != EAGAIN)
-        {
-            exit(1);
-        }
+        clog(L_CRIT, "Read failed, nread: %s", strerror(errno));
     }
 
-    return c;
+    return (nread
+
+    );
 }
 
+void keybd_clear (void)
+{
+    int c = { 0 };
+
+    while (c != '\n' && c != EOF)
+    {
+        c = getchar();
+    }
+}
