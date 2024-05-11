@@ -8,6 +8,7 @@
 #include "screen.h"
 #include "keybd.h"
 #include "logger.h"
+#include "entity.h"
 #include <math.h>
 
 
