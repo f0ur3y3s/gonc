@@ -11,11 +11,14 @@
 
 typedef enum key_constants_t
 {
-    KEY_UP    = 'w',
-    KEY_DOWN  = 's',
-    KEY_LEFT  = 'j',
-    KEY_RIGHT = 'l',
-    ESC_SEQ   = '\033',
+    PRIMARY_KEY_UP    = 'w',
+    PRIMARY_KEY_DOWN  = 's',
+    PRIMARY_KEY_LEFT  = 'a',
+    PRIMARY_KEY_RIGHT = 'd',
+    SECONDARY_KEY_UP   = 'i',
+    SECONDARY_KEY_DOWN = 'k',
+    SECONDARY_KEY_LEFT = 'j',
+    SECONDARY_KEY_RIGHT = 'l',
 } key_constants_t;
 
 typedef enum keybd_status_t

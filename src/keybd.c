@@ -1,6 +1,5 @@
 #include "../include/keybd.h"
 
-// char keybd_read (void)
 int keybd_read (char * c)
 {
     int nread = read(STDIN_FILENO, c, 1);
@@ -10,9 +9,7 @@ int keybd_read (char * c)
         clog(L_CRIT, "Read failed, nread: %s", strerror(errno));
     }
 
-    return (nread
-
-    );
+    return (nread);
 }
 
 void keybd_clear (void)

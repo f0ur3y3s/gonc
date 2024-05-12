@@ -1,6 +1,7 @@
 #include "../include/main.h"
 
-entity_t player = { 0 };
+entity_t left_player  = { 0 };
+entity_t right_player = { 0 };
 
 int process_key ()
 {
@@ -26,33 +27,36 @@ int process_key ()
         case CTRL_KEY('q'):
             status = KEYBD_QUIT;
             break;
-        case KEY_UP:
-            if (player.prev_pos.y > 0)
+        case PRIMARY_KEY_UP:
+            // these cases should be handled by the `game` which contains the
+            // screen sizes and entity size
+            if (left_player.prev_pos.y > 0)
             {
-                player.pos.y -= 1;
+                left_player.pos.y -= 1;
             }
             status = 0;
             break;
-        case KEY_DOWN:
-            if (player.prev_pos.y + player.size_y < screen_height())
+        case PRIMARY_KEY_DOWN:
+            if (left_player.prev_pos.y + left_player.size_y < screen_height())
             {
-                player.pos.y += 1;
+                left_player.pos.y += 1;
             }
             status = 0;
 
             break;
-        case KEY_LEFT:
-            if (player.prev_pos.x > 0)
+        case PRIMARY_KEY_LEFT:
+            if (left_player.prev_pos.x > 0)
             {
-                player.pos.x -= player.icon_size;
+                left_player.pos.x -= left_player.icon_size;
             }
             status = 0;
             break;
-        case KEY_RIGHT:
-            if (player.prev_pos.x + (player.size_x * player.icon_size)
+        case PRIMARY_KEY_RIGHT:
+            if (left_player.prev_pos.x
+                    + (left_player.size_x * left_player.icon_size)
                 < screen_width())
             {
-                player.pos.x += player.icon_size;
+                left_player.pos.x += left_player.icon_size;
             }
             status = 0;
             break;
@@ -75,20 +79,22 @@ int main (void)
     screen_init(width, height);
     // screen_clear();
 
-    player.size_x    = 3;
-    player.size_y    = 2;
-    player.icon_size = 2;
-    player.icon      = "  []  [][][]";
-    player.pos       = (point_t) { 0, (height / 2) - (player.size_y / 2) };
-    player.prev_pos  = player.pos;
+    left_player.size_x    = 3;
+    left_player.size_y    = 2;
+    left_player.icon_size = 2;
+    left_player.icon      = "  []  [][][]";
+    left_player.pos = (point_t) { 0, (height / 2) - (left_player.size_y / 2) };
+    left_player.prev_pos = left_player.pos;
 
-    for (int y = 0; y < player.size_y; y++)
+    for (int y = 0; y < left_player.size_y; y++)
     {
-        for (int x = 0; x < player.size_x * player.icon_size; x++)
+        for (int x = 0; x < left_player.size_x * left_player.icon_size; x++)
         {
             screen_modify(
-                (point_t) { x + player.pos.x, y + player.pos.y },
-                player.icon[(y * player.size_x * player.icon_size) + x]);
+                (point_t) { x + left_player.pos.x, y + left_player.pos.y },
+                left_player
+                    .icon[(y * left_player.size_x * left_player.icon_size)
+                          + x]);
         }
     }
 
@@ -107,30 +113,37 @@ int main (void)
             break;
         }
 
-        clog(L_DEBUG, "Position: (%d, %d)", player.pos.x, player.pos.y);
+        clog(L_DEBUG,
+             "Position: (%d, %d)",
+             left_player.pos.x,
+             left_player.pos.y);
         clog(L_DEBUG,
              "Cutting buffer from (%d, %d) to (%d, %d)",
-             player.prev_pos.x,
-             player.prev_pos.y,
-             player.prev_pos.x + player.size_x * player.icon_size,
-             player.prev_pos.y + player.size_y);
+             left_player.prev_pos.x,
+             left_player.prev_pos.y,
+             left_player.prev_pos.x
+                 + left_player.size_x * left_player.icon_size,
+             left_player.prev_pos.y + left_player.size_y);
 
         screen_buffer_cut(
-            (point_t) { player.prev_pos.x, player.prev_pos.y },
-            (point_t) { player.prev_pos.x + player.size_x * player.icon_size,
-                        player.prev_pos.y + player.size_y });
+            (point_t) { left_player.prev_pos.x, left_player.prev_pos.y },
+            (point_t) { left_player.prev_pos.x
+                            + left_player.size_x * left_player.icon_size,
+                        left_player.prev_pos.y + left_player.size_y });
 
-        for (int y = 0; y < player.size_y; y++)
+        for (int y = 0; y < left_player.size_y; y++)
         {
-            for (int x = 0; x < player.size_x * player.icon_size; x++)
+            for (int x = 0; x < left_player.size_x * left_player.icon_size; x++)
             {
                 screen_modify(
-                    (point_t) { x + player.pos.x, y + player.pos.y },
-                    player.icon[(y * player.size_x * player.icon_size) + x]);
+                    (point_t) { x + left_player.pos.x, y + left_player.pos.y },
+                    left_player
+                        .icon[(y * left_player.size_x * left_player.icon_size)
+                              + x]);
             }
         }
 
-        player.prev_pos = player.pos;
+        left_player.prev_pos = left_player.pos;
         screen_display();
     }
 
